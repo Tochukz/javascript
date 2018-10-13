@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Constructors and Prototype</title>
+</head>
+
+<body>
+    <script>
+        function Person() {
+
+        }
+        var person1 = new Person();
+        var person2 = new Person;
+        if (person1 instanceof Person) {
+            console.log("person1 object is an instance of Person constructor");
+            console.log(person2 instanceof Person); //true
+        }
+
+        if (person2.constructor === Person) {
+            console.log("Person2's constructor is Person");
+            console.log(person1 instanceof Person); //true
+        }
+        /* It is adviced to always use instanceof operator to check the type of an objects because the constructor property of the
+         * object can be overwritten and therefore may not be conpletely accurate.
+         */
+
+        function Book(title, pages) {
+            this.title = title;
+            this.pages = pages;
+            this.summary = function() {
+                return this.title + " is a " + this.pages + " pages  book.";
+            };
+        }
+        var book1 = new Book("JavaScript OOP", 122);
+        var book2 = new Book("Pro C#", 678);
+
+        console.log(book1.title);
+        console.log(book2.pages);
+        console.log(book1.summary());
+        console.log(book2.summary());
+
+        function Car(name) {
+            Object.defineProperty(this, "name", {
+                get: function() {
+                    return name;
+                },
+                set: function(setName) {
+                    name = setName;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            this.year = 2016;
+            this.summary = function() {
+                return this.name + ' ' + this.year;
+            }
+        }
+        var car1 = new Car("Golf");
+        console.log(car1.summary());
+
+        var car2 = Car(); //Note: new operator is missing. This will throw an error in strict mode.
+        console.log(car2 instanceof Car); //fasle
+        console.log(typeof car2); //undefined
+        console.log(year); //2016
+        /* Without the new operator then it is just an ordinary function call that returns no value by default therefore car2 becomes undefined.
+         * With the new operator an object instance is returned by default.
+         * Without the new operator, the this keyword used in the function refers to the global Object.
+         */
+
+        /*Identifying a prototype property*/
+        function isPrototypeProp(obj, prop) {
+            return prop in obj && !obj.hasOwnProperty(prop);
+        }
+        console.log(isPrototypeProp(car1, "name")); //false
+        console.log(isPrototypeProp(car1, "toString")); //true
+        console.log(isPrototypeProp(car1, "hasOwnProperty")); //true
+
+        console.log(":::Checking prototype of an object ::::");
+        /*Checking the prototype property of an object*/
+        var protoCar = Object.getPrototypeOf(car1);
+        console.log(Car.prototype === protoCar); //true
+        console.log(Car.prototype);
+        console.log(Car.prototype.isPrototypeOf(car1)); //true
+
+        /*overriding prototype method*/
+        var obj = {};
+        console.log(obj.toString()); //[object Object]
+        obj.toString = function() {
+            return ["object custom"];
+        }
+        console.log(obj.toString()); //[object custom]
+        delete obj.toString;
+        console.log(obj.toString()); //[object Objest]
+        delete obj.toString;
+        console.log(obj.toString()); //[object Object]
+
+        /*Defining prototype method. 
+         *Prototype methods are more or less like static methods in class based OOP.         
+         */
+        function Animal(name, habitat) {
+            this.name = name;
+            this.habitat = habitat;
+        }
+        Animal.prototype.summary = function() {
+            return this.name + " lives in the " + this.habitat;
+        };
+        var tiger = new Animal("Tiger", "jungle");
+        var shark = new Animal("Shark", "ocean");
+        console.log(tiger.summary());
+        console.log(shark.summary());
+
+        /*Using protype property as a static property*/
+        function Individual(name) {
+            this.name = name;
+        }
+        Individual.prototype.cities = [];
+
+        var uche = new Individual("Uche");
+        uche.cities.push("Lagos");
+
+        var tochi = new Individual("Tochi");
+        tochi.cities.push("Cape Town");
+
+        console.log(uche.cities);
+        console.log(tochi.cities);
+
+        /*Overriding the prototype property using object literal*/
+        ;
+
+        function Cloth(name) {
+            this.name = name;
+        }
+        Cloth.prototype = {
+            color: "Black",
+            size: "42"
+        };
+
+        var suite = new Cloth("Suite");
+        console.log(suite instanceof Cloth); // true
+        console.log(suite.constructor === Cloth); //false. The constructor property of the prototype object has been overwritten.
+        console.log(suite.constructor === Object); //true. The constructor property is now the construtor property of the object literal.
+
+        console.log(":::Preserving constructor property of prototype object:::");
+        /*Preserving the constructor property while Overriding the prototype object property  */
+        function Sheet(name) {
+            this.name = name;
+        }
+        Sheet.prototype = {
+            constructor: Sheet,
+            color: "White",
+            size: "278"
+        };
+        var bedSheet = new Sheet("Bed Sheet");
+        console.log(bedSheet instanceof Sheet); //true
+        console.log(bedSheet.constructor === Sheet); //true
+        console.log(bedSheet.constructor === Object); //false
+
+        console.log(":::changing prototype::::");
+        /*You can modify the prototype at any time*/
+        function Laptop(name) {
+            this.name = name;
+        }
+        var hpg56 = new Laptop("HP G56")
+        console.log("screenSize" in hpg56);
+        Laptop.prototype.screenSize = function() {
+            return "16 Inches";
+        };
+        console.log("screenSize" in hpg56);
+        console.log(hpg56.screenSize());
+
+        /*You can add property to frozen objects through the backdoor by using prototype*/
+        var dellLatitude = new Laptop("Dell Latitude");
+        Object.freeze(dellLatitude);
+        //console.log
+        Laptop.prototype.color = 'Black';
+        console.log("color" in dellLatitude);
+        dellLatitude.color = "Gold";
+        console.log(dellLatitude.color); //Black. Property is still not changeable.
+
+        console.log("::::Built in reducet prototype:::")
+        /*Modifying the prototype of built in Objects*/
+        Array.prototype.sum = function() {
+            return this.reduce(function(accumulator, currentValue) {
+                return accumulator + currentValue;
+            }, 0);
+        };
+        var numbers = [1, 2, 3, 4, 5];
+        console.log(numbers.sum());
+
+        String.prototype.pascalCase = function() {
+            var strArray = this.split(' ');
+            var str = '';
+            strArray.forEach(function(elem) {
+                str += elem.charAt(0).toUpperCase() + elem.substring(1) + ' ';
+            });
+            return str;
+        }
+        var me = "tochukw fullstack developer r29000";
+        console.log(me.pascalCase());
+
+        /**
+         * While it may be fun and interesting to modify built-in objects to experiment with
+         * functionality, it’s not a good idea to do so in a production environment. Developers
+         * expect built-in objects to behave a certain way and have certain methods.
+         * Deliberatel altering built-in objects violates those expectations and makes other developers
+         * unsure how the objects should work.
+         */
+
+    </script>
+</body>
+
+</html>

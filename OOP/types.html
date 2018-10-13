@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Types</title>
+</head>
+
+<body>
+    <script>
+        console.log(typeof null);
+        var name = "Tochukwu";
+        console.log(name.length);
+        console.log(name.replace('chukwu', 'chukz'));
+
+        var reflect = new Function("string ", "return string; ");
+
+        console.log(reflect("Tochuwu R33000"));
+
+        var names = ["Tochukz"];
+        names.push("Chichi");
+        names["push"]("Uche");
+        var method = "push";
+        names[method]("Chukwudi");
+        console.log(names);
+        var object = new Object();
+        var obj = {};
+
+        /*Using the typeof operator*/
+        console.log(typeof reflect);
+        console.log(typeof names);
+        console.log(typeof object);
+
+        /*Using the instanceof operator*/
+        console.log(reflect instanceof Function);
+        console.log(names instanceof Array);
+        console.log(object instanceof Object);
+
+        console.log("instanceof and Inheritance");
+
+        /*instanceof and inheritance*/
+        console.log(reflect instanceof Object);
+        console.log(names instanceof Object);
+        console.log(obj instanceof Object);
+        console.log(obj instanceof Array);
+        console.log(object instanceof Function);
+
+        /*Identifying Array type regardless of origin, context or frame*/
+        console.log(Array.isArray(names));
+
+        console.log(reflect);
+
+    </script>
+</body>
+
+</html>

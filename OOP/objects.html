@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Objects</title>
+</head>
+
+<body>
+    <h1>Javascript Object</h1>
+    <script>
+        "use strict";
+        var person = new Object();
+        person.name = "Tochukwu";
+        person.job = "Software Developer";
+        person.lang = "PHP, JavaScript, C#";
+        person.details = function() {
+            return this.name + ' is a ' + this.job;
+        };
+
+        /*Checking if property/method exists in object.*/
+        if ("lang" in person) {
+            console.log(person.lang); //PHP, JavaScript, C#
+        }
+
+        if ("details" in person) {
+            console.log(person.details()); //Tochukwu is a Software Developer
+        }
+        console.log("city" in person); //false
+
+        //The 'in' operator checks for both "own property" and prototype property of the object.
+
+        /*Checking for 'own property'of an object*/
+        if ("toString" in person) {
+            var msg = "person has a toString property. It could be 'own property' or 'propotype proprty'.";
+            console.log(msg);
+        }
+
+        if (person.hasOwnProperty("toString")) {
+            console.log("person's toString property is 'own property'.");
+        } else {
+            console.log("person's toString property is 'prototype property'.");
+        }
+
+        /*Deleting a property from an object using the delete operation*/
+        if ("lang" in person) {
+            console.log("person object contains lang: %s ", person.lang);
+        }
+        delete person.lang;
+        console.log(person.lang);
+
+        /*Enumerating the properties of an object*/
+        console.log('::::Enumerating the properties of the person object:::::::');
+        for (var property in person) {
+            console.log("Property: " + property + ' Value: ' + person[property]);
+        }
+
+        /*Getting a list of an object property*/
+        var properties = Object.keys(person);
+        console.log(properties);
+        for (var i = 0; i < properties.length; i++) {
+            console.log("Property: " + properties[i] + ' Value: ' + person[properties[i]]);
+        }
+
+        //Not all properties are enumerable.
+        //Most of the native methods on objects have their [[Enumerable]] attribute set to false.
+
+        /*Checking for enumerable properties*/
+        console.log(':::check enumerable properties:::');
+        console.log(person.propertyIsEnumerable('name')); //true
+        console.log("toString" in person); //true
+        console.log(person.propertyIsEnumerable("toString")); //false
+
+        /*There are two kind of properties: 1. Data Properties 2. Accessor Properties*/
+        //Data proprties have already been used in the person object. Now lets use accessor propery.
+        var car = {
+            _name: "Gulf",
+            get name() {
+                return this._name;
+            },
+            set name(value) {
+                this._name = value;
+            }
+        };
+
+        console.log(car.name); //Gulf
+        car.name = "Chevolet";
+        console.log(car.name); //Chevolet
+        /*
+         * Accessor properties are most useful when you want the assignment of a value to trigger some sort of
+         * behaviour, or when reading a value requires the calculation of the desired return value.
+         *
+         * If you define only a getter, then the property becomes read-only, and attempts to
+         * write to it will fail silently in nonstrict mode and throw an error in strict mode.
+         *
+         * If you define only a setter, then the property becomes write-only, and attempts to
+         * read the value will fail silently in both strict and nonstrict modes.
+         */
+
+
+        /*Property Attributes*/
+        /* 1. [[Enumerable]] and [[Configuarable]] property attribues */
+        var car2 = {
+            name: "Chevolet",
+            year: "2014",
+            color: "White",
+        };
+        //Make property non-enumerable
+        console.log(car2.propertyIsEnumerable("name")); //true
+        Object.defineProperty(car2, "name", {
+            enumerable: false
+        });
+        console.log(car2.propertyIsEnumerable("name"));
+
+        //Make property non-configurable
+        console.log(car2.hasOwnProperty("year"));
+        Object.defineProperty(car2, "year", {
+            configurable: false
+        });
+        //delete car2.year; //In strict mode this will throw an error.
+        console.log("Attempted to delete car2.year property");
+        if (car2.hasOwnProperty("year")) {
+            console.log("car2.year can not be deleted because it is now non configurable");
+        }
+
+        //Object.defineProperty(car2, "year", {
+        //    configurable: true
+        //}); Throw an error saying: Cannot redefine property: year
+
+        /* 2. Data Property Attributes: [[Value]] and [[Writable]]*/
+        var car3 = {};
+        Object.defineProperty(car3, "name", {
+            value: "Toyota",
+            writable: true,
+            enumerable: true,
+            configurable: true
+        });
+        console.log(car3.name); //Toyota
+        console.log(car3.propertyIsEnumerable("name")); //true
+        car3.name = "Sienna";
+        console.log(car3.name); //Sienna
+        delete car3.name;
+        console.log("name" in car3); //false
+
+        var car4 = {};
+        Object.defineProperty(car4, "name", {
+            value: "Honda Pilot"
+        }); //This property will become non-writable, non-enumerable and non-configurable.
+        console.log(car4.name);
+        console.log(car4.propertyIsEnumerable("name")); //false  (car4.name is non-enumerable)
+        //car4.name = "Honder Babyboy"; //Will throw an error in strict mode
+        console.log(car4.name); //Honder pilot (car4.name is non-writable)
+        //delete car4.name; //Will throw an erro in strict mode
+        console.log("name" in car4); //true (car4.name is non-configurable and therefore cannot be deleted)
+
+        /* 3. Accessor Property Attributes: [[Set]] and [[Get]] */
+        var car5 = {
+            _name: "BMW"
+        };
+        Object.defineProperty(car5, "name", {
+            get: function() {
+                return this._name;
+            },
+            set: function(value) {
+                this._name = value;
+            },
+            enumerable: true,
+            configurable: true
+        }); //omitting the enumerable/configurable key will make the property non-enumerable/non-configurable.
+        //You can omit 'get' the make the property writeonly or omit 'set' to make it readonly .
+
+        console.log(car5.name); //BMW
+        console.log("name" in car5); //true
+        console.log(car5.propertyIsEnumerable("name")); //true
+        car5.name = "2017 BMW";
+        console.log(car5.name); // 2017 BMW
+        delete car5.name;
+        console.log(car5.hasOwnProperty("name")); //false
+
+        /*Defining multiple properties*/
+        var car7 = {};
+        Object.defineProperties(car7, {
+            name: {
+                value: "Lexus",
+                writable: true,
+                enumerable: true,
+                configurable: true
+            },
+            color: {
+                value: "White",
+                writable: true,
+                enumerable: true,
+                configerable: false
+            },
+            _year: {
+                value: 2014,
+                writable: true,
+                enumerable: false,
+                configurable: true,
+            },
+            //Setting accessors property for using _year as base property.
+            year: {
+                get: function() {
+                    return this._year;
+                },
+                set: function(value) {
+                    this._year = value;
+                },
+                enumerable: true,
+                configurable: true
+            }
+        });
+
+        console.log(car7.name);
+        console.log(car7.color);
+        console.log(car7.year);
+        car7.year = 2018;
+        console.log(car7.year);
+
+        var props = Object.keys(car7);
+        console.log(props);
+
+        /*Retreiving property attributes*/
+        var car8 = {
+            name: "Volvo"
+        };
+        var propertyDescriptor = Object.getOwnPropertyDescriptor(car8, "name");
+        console.log(propertyDescriptor.enumerable);
+        console.log(propertyDescriptor.configurable);
+        console.log(propertyDescriptor.writable);
+        console.log(propertyDescriptor.value);
+
+        /*Preventing object modification. Can be done in three ways:
+         * 1. Make the object nonextensible using Object.preventExtensions.
+         * 2. Seal the object using Object.seal().
+         */
+        /*1 . Preventing object extension*/
+        var car9 = {
+            name: "Mazda"
+        };
+        if (Object.isExtensible(car9)) {
+            console.log("car9 object is extensible");
+            console.log("Number of properties in car9 is %d", Object.keys(car9).length);
+        }
+        car9.color = "Green";
+        console.log("Numer of properties in car9 is now %d", Object.keys(car9).length);
+
+        car9.wheels = "Alloy";
+        console.log("Numer of properties in car9 is now %d", Object.keys(car9).length);
+
+        delete car9.color; //Properties can be deleted my nonextensible objects.
+        console.log("Numer of properties in car9 has reduced to %d", Object.keys(car9).length);
+        console.log("color" in car9); //false. (Nonextensible objects have configurable properties by default.)
+
+        Object.preventExtensions(car9); //Always use strict mode with nonextensible objects.
+
+        if (!Object.isExtensible(car9)) {
+            console.log("car9 object is now nonextensible");
+        }
+
+        //car9.year = 2014; //Fails silently. Fails with and error in strict mode.
+        console.log("Number of properties in car9 is now %d", Object.keys(car9).length);
+
+        /* 2. Sealing an object */
+        var car10 = {
+            name: "Hyundia"
+        };
+        console.log(Object.isSealed(car10)); //false.
+        console.log(Object.isExtensible(car10)); //true
+        car10.year = 2016;
+
+        Object.seal(car10);
+
+        if (Object.isSealed(car10)) {
+            console.log("car10 object is now sealed.")
+            console.log(Object.isExtensible(car10)); //false
+            //delete car10.year; //Sealed object properties are nonconfigurable hence can not be deleted. Throw an error in strict mode.
+            console.log(car10.hasOwnProperty("year")); //true
+            car10.name = "Misibushi";
+            console.log(car10.name);
+            var descriptor = Object.getOwnPropertyDescriptor(car10, "name");
+            console.log(descriptor.configurable); //false.
+            console.log(descriptor.writable); //true.
+        }
+        //Sealed objects are Javascript's way fo giving you the same measure of control without using classes.
+        //Be sure to use strict mode with sealed objects so you’ll get an error when someone
+        //tries to use the object incorrectly.
+
+        console.log(":::::Freezing Objects:::::");
+        /* 3. Freezing objects*/
+        var car11 = {
+            name: "Benze",
+            color: "Black"
+        };
+
+        console.log(Object.isExtensible(car11)); //true
+        console.log(Object.isSealed(car11)); //false
+        console.log(Object.isFrozen(car11)); //false
+
+        Object.freeze(car11);
+        if (Object.isFrozen(car11)) {
+            console.log("car11 object is now frozen.");
+            console.log(Object.isExtensible(car11));
+            console.log(Object.isSealed(car11));
+
+            //car11.color = "Green"; //Throws an error in strict mode. Properties of frozen object are readonly.
+            console.log(car11.color);
+            var descriptor = Object.getOwnPropertyDescriptor(car11, "color");
+            console.log(descriptor.writable);
+            console.log(descriptor.configurable);
+        }
+
+        /*
+         * Summary:
+         * 1. Nonextensible object are objects to which you can not add new properties.
+         * 2. Sealed objects are Nonextensible objects whose properties are non nonconfigurable hence
+         *    you can not delete any exiting property of a sealed object.
+         * 3. Frozen objects are Sealed objects whose property are nonwritable, hence you can not change
+         *    the property value of any existing property of a frozen object.
+         */
+
+    </script>
+</body>
+
+</html>

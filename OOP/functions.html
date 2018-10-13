@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Functions</title>
+</head>
+
+<body>
+    <script>
+        /*Passing a function as an argument*/
+        var numbers = [1, 9, 5, 11, 3, 8];
+        numbers.sort(function(x, y) {
+            return x - y;
+        });
+        console.log(numbers);
+
+        /*functions and arguments*/
+        function relect(value) {
+            return value
+        }
+        console.log(relect("Hi"));
+        console.log(relect("Hi", "People"));
+        console.log(relect.length); //returns the number of argument the function expects
+
+        function mirror() {
+            return arguments[0];
+        }
+        console.log(mirror("Hello"));
+        console.log(mirror("Hello", "People"));
+        console.log(mirror.length);
+
+        /*function with variable lenth of arguments*/
+        function sum() {
+            var i = 0;
+            var total = 0;
+            while (i < arguments.length) {
+                total += arguments[i];
+                i++;
+            }
+            return total;
+        }
+        console.log(sum(3, 5));
+        console.log(sum(2, 8, 11, 9, 10));
+        console.log(sum());
+
+        /*function overloading*/
+        function times(x, y) {
+            if (typeof x == 'string' && typeof y == 'number') {
+                var str = ' ';
+                for (var i = 0; i < y; i++) {
+                    str += x;
+                }
+                return str;
+            } else if (typeof x == 'number' && typeof y == 'number') {
+                return x * y;
+            }
+        }
+
+        console.log(times("Hello ", 5));
+        console.log(times(4, 8));
+
+        /*Object method*/
+        var person = {
+            name: "Tochukwu",
+            city: "Cape Town",
+            salary: 38000,
+            summary: function(dev) {
+                return person.name + ' is a ' + dev + ', he live in ' + person.city +
+                    ' and earns ' + this.salary + ' monthly.';
+            }
+        }
+        console.log(person.summary("JavaScript developer"));
+
+        /*Using 'this' object*/
+        function nameCity() {
+            return this.name + ' live in ' + this.city;
+        }
+        var person1 = {
+            name: "Uche",
+            city: "Lagos",
+            summary: nameCity
+        }
+        var person2 = {
+            name: "Chukwudi",
+            city: "Kaduna",
+            summary: nameCity
+        }
+        var person3 = {
+            name: "Tochukwu",
+            city: "Cape Town",
+            summary: nameCity
+        }
+        var people = [person1, person2, person3];
+        //Sorting the objects by name
+        people.sort(function(obj1, obj2) {
+            return obj1.name.localeCompare(obj2.name);
+        });
+
+        people.forEach(function(obj) {
+            console.log(obj.summary());
+        });
+
+        var name = "Chichi";
+        var city = "Lagos";
+        console.log(nameCity());
+
+        /*changing 'this' using call() method*/
+        function getPerson(job) {
+            console.log(this.name + ' ' + job + ' ' + this.city)
+        }
+        var person4 = {
+            name: "Cuiba",
+            city: "Benin",
+            personInfo: getPerson,
+        }
+        var person5 = {
+            name: "Odion",
+            city: "Lagos",
+            personInfo: getPerson
+        }
+        person5.personInfo("Mechanic");
+        person5.personInfo.call(person4, "Mechanic");
+        //The call method is used to change the object that the 'this' operator refers to in the getPerson function.
+        //signature call(this, args...) args are the arguments to be passed to the function
+
+        //using apply() instead of call()
+        person4.personInfo("Electrician");
+        person4.personInfo.apply(person5, ["Electrician"]);
+        //apply() has only two parameters and the second is an array of parameters to be passed to the function
+
+        /*changing object referred to by 'this' using bind() method*/
+        var person6 = {
+            name: "Ebuka",
+            city: "Aba"
+        }
+        var person7 = {
+            name: "Tony",
+            city: "Arizona"
+        }
+        var person6Info = getPerson.bind(person6);
+        person6Info("Student");
+
+        var person7Info = getPerson.bind(person7, "Computer Techinician");
+        person7Info();
+
+        person7.personInfo = getPerson;
+        person7.personInfo("Airline Worker");
+
+    </script>
+</body>
+
+</html>

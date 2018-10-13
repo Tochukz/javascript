@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Inheritance</title>
+</head>
+
+<body>
+    <script>
+        /* Every object of type Object inherits from Object.prototype*/
+        var book = {
+            name: "Priciple of JavaScript OOP"
+        }
+        var bookPrototype = Object.getPrototypeOf(book);
+        console.log(bookPrototype === Object.prototype); //true
+
+        var laptop = new Object();
+        laptop.name = "HP G56";
+        var laptopPrototype = Object.getPrototypeOf(laptop);
+        console.log(laptopPrototype === Object.prototype); //true
+
+        /* The valueOf() method gets called whenever an operator is used on an object*/
+        var now = new Date();
+        var past = new Date(2010, 1, 1);
+        console.log(now > past); //true
+
+        function Book(title, price) {
+            this.title = title;
+            this.price = price;
+        }
+        Book.prototype.valueOf = function() {
+            return this.price;
+        }
+        var proCSharp = new Book("Pro C#", 789);
+        var proJS = new Book("Pro JavaScript", 1299);
+        var proPHP = new Book("Pro PHP", 999);
+        var books = [proCSharp, proJS, proPHP];
+        total = 0;
+        books.forEach(function(book) {
+            total += book;
+        });
+        console.log(total);
+
+        /* toString() is called as a fallback anytime toValue() returns a reference instead of a primitive value.
+         * toString() is also called whenever a string representation is expected from a primitive value.
+         */
+        Book.prototype.toString = function() {
+            return this.title;
+        };
+        //I explicitly called toString() on the objects here because toValue() trumps the toString() method.
+        console.log("Title: %s", proJS.toString()); // Title: Pro JavaScript
+        console.log("Title: " + proCSharp.toString()); // Title: Pro C#
+
+        function Laptop(name, price) {
+            this.name = name;
+            this.price = price;
+        }
+        Laptop.prototype.toString = function() {
+            return this.name;
+        }
+        var dellLat = new Laptop("Dell Latitude", 2879);
+        var hpG56 = new Laptop("HP G56", 3980);
+        console.log("Laptop: " + dellLat); //Dell Latitude//No need to explicitly call toString() here since custom toValue() is not defined in the prototype.
+        console.log("Laptop: %s", hpG56); //Laptop: Laptop
+
+        /*Object Inheritance*/
+        var person = {
+            firstname: "Tochukwu",
+            lastname: "Nwachukwu",
+            lang: "C#, PHP, JavaScript",
+            fullname: function() {
+                return this.firstname + ' ' + this.lastname;
+            },
+            toString: function() {
+                return this.firstname + ': ' + this.lang;
+            }
+        }
+        var individual = Object.create(person, {
+            firstname: {
+                value: "Tochi",
+                writable: true,
+                enumerable: true,
+                configurable: true
+            },
+            lastname: {
+                value: "Nwachukwu",
+                enumerable: true,
+            },
+            lang: {
+                value: "JS, CSharp, PHP",
+            }
+        });
+        console.log(person.fullname()); //Tochukwu Nwachukwu
+        console.log(individual.fullname()); //Tochi Nwachukwu
+        console.log("Dev: " + person); // Dev: Tochukwu: C#, PHP, JavaScript
+        console.log("Dev: " + individual); // Dev: Tochi: JS, CSharp, PHP
+        console.log(person.hasOwnProperty("fullname")); //true
+        console.log(individual.hasOwnProperty("fullname")); //false
+        console.log(person.isPrototypeOf(individual)); //true
+
+        /*Creating an object with null prototype*/
+        var object = Object.create(null);
+        console.log("toString" in object); //false;
+        console.log("valueOf" in object); //false
+        //perfect for creating a lookup hash without potential naming collisions with inherited property names
+
+        console.log("::::::Constructor Inheritance::::");
+        /*Constructor Inheritance*/
+        function Rectangle(width, length) {
+            this.width = width;
+            this.length = length;
+        }
+        Rectangle.prototype.getArea = function() {
+            return this.length * this.width;
+        }
+        Rectangle.prototype.toString = function() {
+            return "[Rectangle " + this.width + "x" + this.length + "]";
+        }
+
+        function Square(size) {
+            this.width = size;
+            this.length = size;
+
+        }
+        Square.prototype = new Rectangle();
+        Square.prototype.constructor = Square; //Restoring the original constructor
+        Square.prototype.toString = function() {
+            return "[Square " + this.width + "x" + this.length + "]";
+        };
+
+        var rect = new Rectangle(5, 8);
+        var sqr = new Square(5);
+
+        console.log(rect.toString()); // [Rectangle 5x8]
+        console.log("Area: %s", rect.getArea()); // Area: 40
+        console.log(rect instanceof Object); // true
+        console.log(rect instanceof Rectangle); // true
+
+        console.log(sqr.toString()); // [Square 5x5]
+        console.log("Area: %s", sqr.getArea()) // Area: 50
+        console.log(sqr instanceof Rectangle); // true
+        console.log(sqr instanceof Square); //true
+
+        /* The above Contructor inheritance syntax can throw an error  at the line: Square.prototype = new Rectangle() 
+         *  if the arugument of the Regtangle constructor is required or if the function is used to maintain state
+         *  In this second syntax we link the prototype property of the Sqare constructor to an object which extends Retangle.Prototype
+         */
+        function Square2(size) {
+            this.width = size;
+            this.length = size;
+        }
+        Square2.prototype = Object.create(Rectangle.prototype, {
+            constructor: {
+                writable: true,
+                enumerable: true,
+                cnfigurable: true,
+                value: Square2
+
+            }
+        });
+        Square2.prototype.toString = function() {
+            return "[Square2: " + this.width + "x" + this.length + "]"
+        }
+        var sqr2 = new Square2(7);
+
+        console.log(sqr2.toString());
+        console.log(sqr2.getArea());
+        console.log(sqr2 instanceof Rectangle);
+        /*Always overwrite prototype before you add properties to it*/
+
+
+        console.log(":::::Constructor Stealing:::");
+        /*Passing arguments to the super-type constructor from the sub-type constructor*/
+        function Person(name, city) {
+            this.name = name;
+            this.city = city
+        }
+
+        function Dev(name, city, lang, salary) {
+            Person.call(this, name, city);
+            this.lang = lang;
+            this.salary = salary;
+        }
+        Dev.prototype = Object.create(Person.prototype, {
+            constructor: {
+                writable: true,
+                configurable: true,
+                enumerable: true,
+                value: Dev
+
+            }
+        });
+        Dev.prototype.getDev = function() {
+            return this.name + " " + this.city;
+        };
+        Dev.prototype.toString = function() {
+            return this.getDev() + ' ' + this.lang + ' ' + this.salary;
+        };
+
+        var tochukwu = new Dev("Tochukwu", "Cape Town", "c#, PHP, JavaScript", 38000);
+        console.log(tochukwu.getDev());
+        console.log("Dev: " + tochukwu);
+        /* Generally, you’ll modify the prototype for method inheritance and use constructor stealing for properties. This
+         * approach is typically referred to as pseudoclassical inheritance because it
+         * mimics classical inheritance from class-based languages.
+         */
+
+        console.log(":::Accessing over-ridden super-type method::::::")
+        /*Accessing super-type methods*/
+        function Book(pages) {
+            this.pages = pages;
+        }
+        Book.prototype.getBook = function() {
+            return this.pages + " pages";
+        }
+
+        function TextBook(title, pages) {
+            Book.call(this, pages); //Access the super-type constructor
+            this.title = title;
+        }
+        TextBook.prototype = Object.create(Book.prototype, {
+            constructor: {
+                writable: true,
+                enumerable: true,
+                configurable: true,
+                value: TextBook
+            }
+        });
+        TextBook.prototype.getBook = function() {
+            var pages = Book.prototype.getBook.call(this); //Accessing the super-type method
+            return this.title + ' ' + pages;
+        };
+
+        var javaScriptOOP = new TextBook('Principles of OOP in JavaScript', 128);
+        console.log(javaScriptOOP.getBook()); // Principles of OOP in JavaScript 128 pages
+
+    </script>
+</body>
+
+</html>

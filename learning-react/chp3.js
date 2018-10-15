@@ -1,4 +1,4 @@
-/* Chapter 3: Functional Programming with JavaScript 8?
+/* Chapter 3: Functional Programming with JavaScript */
 
 /*Inserting functions into array */
 let funcArry = [

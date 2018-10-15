@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Knowing Vue.JS</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <style>
+        .error{
+            border:solid #ff0000 1px;
+            color:red;
+        }
+        .no_error{
+            border:solid #00ff00 1px;
+            color: green;
+        }
+        .borderClass{
+            border: inset grey 2px;
+        }
+        .fontClass{
+            font-size:14px;
+            font-style: italic; 
+            color:green;     
+            font-family: monospace;
+        }
+        
+    </style>
+    
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" id="nav">
+<div class="container">
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand" style="color:#22c75a">Know Vue.JS</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-menu" aria-expanded="false">
+            <span class="sr-only"> Toggle Navigation </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="nav-menu">
+        <ul class="nav navbar-nav">     
+            <li><a href="/chp2.html">Chp2</a></li>    
+            <li><a href="/chp3.html">Chp3</a></li> 
+            <li><a href="/chp4.html">Chp4</a></li> 
+            <li><a href="/chp5.html">Chp5</a></li> 
+            <li><a href="/chp6.html">Chp6</a></li>    
+            <li><a href="/chp7.html">Chp7</a></li> 
+            <li><a href="/chp8.html">Chp8</a></li> 
+            <li><a href="/chp9.html">Chp9</a></li> 
+            <li><a href="/chp10.html">Chp10</a></li>    
+            <li><a href="/chp11.html">Chp11</a></li> 
+            <li><a href="/chp12.html">Chp12</a></li>             
+        </ul>
+    </div>
+</div>
+</nav>
+<section>
+<div class="container">    
+    <div class="row">                          
+        <div class="col-sm-12">
+            <div id="app">                         
+            </div>
+        </div>
+    </div>
+</div>
+<template id="temp">
+    <div>
+        <div class="col-sm-3">
+            <h4>Dynamic Font Size</h4>
+            <label>Font Size <input type="number" v-model.number="fontSize" /></label>
+            <p v-bind:style="{fontSize : fontSize + 'px'}">Knowing Vue.js</p>
+            <hr />
+            <h4>Font Size with Object</h4>
+            <label>Font Size <input type="number" v-model.number="fontSize2" /></label>
+            <p v-bind:style="fontSizeObject">More about Knowing Vue.</p>
+            <hr />
+            <h4>Multiple Style object</h4>
+            <label>Color: <input type="color" v-model="fontColor" /></label>
+            <p v-bind:style="[fontSizeObject, fontColorObject]">Knowing more things</p>
+            <hr />
+            <label>Class Binding (Enter Number)
+                 <input type="text" v-model="inputNumber" v-bind:class="{error: inputNumberError}" />
+            </label>
+            <label>Multiple classes (Enter Letters)
+                <input type="text" v-model="inputText" v-bind:class="{error: inputTextError, no_error: inputTextError == false }" />
+            </label>            
+        </div>
+        <div class="col-sm-3">
+            <p v-bind:class="[border, font]">Bindind multiple class with array</p>        
+            <p v-bind:class="classArray">Addiing class dynamically</p>
+            <p> 
+                <input v-model="Border" v-on:click="buttonClicked($event)" type="button" value="borderClass" /> 
+                <input v-model="Font"  v-on:click="buttonClicked($event)" type="button" value="fontClass" />
+            </p>
+            <p v-bind:class="[{'borderClass': true},  font]"> Adding multiple class using the object syntax.</p>
+            <!--class name 'borderClass' mut be in quote-->
+            <h4>Computed Class</h4>
+            <label>Word (min: 5 letters)<input v-model="word" v-bind:class="computedWord" type="text" /></label>
+        </div>
+        
+    </div>    
+</template>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"> </script>
+<script> 
+    var app = new Vue({
+        el: "#app",
+        data: {
+            fontSize:15,
+            fontSize2:15,
+            fontSizeObject:{
+                fontSize:'15px'
+            },
+            fontColor:'#ff0000',
+            fontColorObject:{
+                color:'#ff0000'
+            },
+            inputNumber:'',
+            inputNumberError:false,            
+            inputText:'',
+            inputTextError:false,
+            border:'borderClass',
+            font:'fontClass',
+            classArray:[],
+            Border:'borderClass',
+            Font:'fontClass',
+            wordError:false,
+            word:''
+        },
+        watch:{
+            fontSize2:function(){
+                 this.fontSizeObject.fontSize = this.fontSize2 + 'px';   
+            },
+            fontColor: function(){
+                this.fontColorObject.color = this.fontColor;
+            },
+            inputNumber:function(){
+                var inputValue = parseInt(this.inputNumber);            
+                if(isNaN(inputValue)){
+                   this.inputNumberError = true;
+                }else{
+                   this.inputNumberError = false;
+                }
+            },
+            inputText: function(){
+                var text = this.inputText;                           
+                var char;
+                this.inputTextError = false;
+                for(var x=0; x<text.length; x++){
+                    char = parseInt(text[x]);                    
+                    if(!isNaN(char)){                      
+                        this.inputTextError = true;                        
+                        break;                       
+                    }
+                }                   
+            },
+            word: function(){
+                var word = this.word;
+                for(var i=0; i<word.length; i++ ){
+                    if(!isNaN(word[i])){
+                        this.wordError = true;
+                        return;
+                    }
+                }                
+                if(word.length >= 5){
+                   this.wordError = false;                   
+                }else{
+                    this.wordError = true;
+                }
+                
+            }
+            
+        },
+        methods:{
+            buttonClicked: function(event){
+                var btn = event.target;
+                var val = btn.value; 
+                var classArray = this.classArray
+                var found = false;
+                for(var x=0; x<classArray.length; x++){                    
+                    if(classArray[x] == val){
+                        classArray.splice(x, 1); 
+                        found = true;
+                    }
+                }                
+                if(found == false){
+                    classArray.push(val);
+                }                                                                             
+                this.classArray = classArray;
+            }
+        },
+        computed:{
+            computedWord: function(){
+                return{
+                    error: this.wordError,
+                    no_error: this.wordError == false
+                }
+            }
+        },
+        template:'#temp'
+    });
+</script>
+</body>
+</html>

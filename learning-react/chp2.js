@@ -1,4 +1,5 @@
 /*Chapter 2: 2. Emerging JavaScript. */
+
 /*::::::::Destructuring::::::::::::::::*/
 const dev = {
     devname: 'Tochukwu',

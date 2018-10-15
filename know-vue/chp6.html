@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Knowing Vue.JS</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" id="nav">
+<div class="container">
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand" style="color:#22c75a">Know Vue.JS</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-menu" aria-expanded="false">
+            <span class="sr-only"> Toggle Navigation </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="nav-menu">
+        <ul class="nav navbar-nav">     
+            <li><a href="/chp2.html">Chp2</a></li>    
+            <li><a href="/chp3.html">Chp3</a></li> 
+            <li><a href="/chp4.html">Chp4</a></li> 
+            <li><a href="/chp5.html">Chp5</a></li> 
+            <li><a href="/chp6.html">Chp6</a></li>    
+            <li><a href="/chp7.html">Chp7</a></li> 
+            <li><a href="/chp8.html">Chp8</a></li> 
+            <li><a href="/chp9.html">Chp9</a></li> 
+            <li><a href="/chp10.html">Chp10</a></li>    
+            <li><a href="/chp11.html">Chp11</a></li> 
+            <li><a href="/chp12.html">Chp12</a></li>             
+        </ul>
+    </div>
+</div>
+</nav>
+<section>
+<div class="container">    
+    <div class="row">                          
+        <div class="col-sm-12">
+            <div id="app">                         
+            </div>
+        </div>
+    </div>
+</div>
+<template id="temp">
+    <div>
+        <div class="col-sm-3">       
+            <label>
+                Text: <input type="text" v-model="inputs.text" />
+            </label>
+            <p><strong>Text:</strong>    {{inputs.text}}</p>
+            <hr />
+            <label>
+                Number as String <input type="number" v-model="inputs.numberAsString" />
+            </label>
+            <p>
+                <strong>Number as String:</strong> {{ inputs.numberAsString}} <br />
+                <strong>Type:</strong> {{typeof inputs.numberAsString}}
+            </p>
+            <hr />
+            <label>
+                Number: <input type="number" v-model.number="inputs.numberAsNumber" />
+            </label>
+            <p>                      
+                <strong>Number as Number:</strong> {{inputs.numberAsNumber}} <br />
+                <strong>Number Type:</strong> {{typeof inputs.numberAsNumber}}
+            </p>
+            <hr />
+            <label>
+                Date: <input type="date" v-model="inputs.date" />
+            </label>
+            <p>
+                <strong>Date:</strong> {{inputs.date}}
+            </p>
+                      
+        </div>
+        <div class="col-sm-3">
+            <label>
+                Password: <input type="password" v-model="inputs.password" />            
+            </label>
+            <p>
+                <strong>Password:</strong> {{inputs.password}}
+            </p>
+            <hr />
+            <label for="myCheckBox">
+                Checkbox: <input type="checkbox" v-model="inputs.checkbox" value="myCheckbox" id="myCheckBox"/>
+            </label>
+            <p>
+                <strong>Checkbox:</strong> {{inputs.checkbox}}
+            </p>
+            <hr />
+            <div class="thumbnail">
+                <h4>Checkboxes</h4>
+                <label for="laravel">
+                    Laravel <input type="checkbox" v-model="inputs.checkboxes" value="Laravel" id="laravel"/>
+                </label>
+                <label for="vue">
+                    Vue.js <input type="checkbox" v-model="inputs.checkboxes" value="Vue" id="vue" />
+                </label>
+                <label for="aspdotnet">
+                    ASP.NET <input type="checkbox" v-model="inputs.checkboxes" value="ASP.NET" id="aspdotnet" />
+                </label>                
+            </div>
+            <ul>
+                <li v-for="input in inputs.checkboxes">{{input}}</li>
+            </ul>
+            <hr />
+            <div class="thumbnail">
+                <h4>Radio</h4>
+                <label for="frontend">
+                    Frontend <input type="radio" v-model="inputs.radios" value="frontend" id="frontend" />
+                </label>
+                <label for="backend">
+                    Backend <input type="radio" v-model="inputs.radiosPreset" value="backend" id="backend" />
+                </label>
+                <label for="devops">
+                   DevOps <input type="radio" v-model="inputs.radios" value="devops" id="devops" />
+                </label>
+            </div>
+            <p>
+               <strong>Radio:</strong> {{inputs.radios}}
+            </p>
+            <hr />           
+        </div>
+        
+        <div class="col-sm-3">             
+            <template  v-for="(option, index) in inputs.radiosDynamicOptions">                
+                <label v-bind:for="option.value">
+                    {{option.label}} <input type="radio" v-model="inputs.radiosDynamic" v-bind:value="option.value" v-bind:id="option.value" />
+                </label> <br v-if="index < inputs.radiosDynamicOptions.length"/>
+            </template>
+            <p>
+                <strong>Dynamic Radio:</strong> {{inputs.radiosDynamic}}
+            </p>
+            <hr />
+            <label>
+                File: <input type="file" v-on:change="fileChanged($event)" />
+            </label>
+            <p>
+                <strong>File:</strong> {{fileName}}
+            </p>
+            <hr />
+            <h4>Textarea</h4>
+            <textarea v-model="text" cols="25" style="height:100px"></textarea>
+            <p style="white-space: pre-line">
+                {{text}}
+            </p>
+            <h3><a href="/chp6b.html">Next >></a></h3>
+        </div>
+        <div class="col-sm-3">
+            <label>Select</label>
+            <select v-model="select">
+                <option disabled value="">Select your lang</option>
+                <option value="javascript">JavaScript</option>
+                <option value="csharp">C#</option>
+                <option value="php">PHP</option>
+            </select>
+            <p>
+                <strong>Select:</strong> {{select}}
+            </p>
+            <hr />
+            <label>Multi Select</label>
+            <select v-model="multiselect" multiple>
+                <option disabled></option>
+                <option value="c#">C#</option>
+                <option value="php">PHP</option>
+                <option value="laravel">Laravel</option>
+                <option value="vue">Vue</option>
+            </select>
+            <ul>
+               <li v-for="(item, index) in multiselect">{{item}}</li>
+            </ul>
+            <hr />
+            <label>Lazy<input type="text" v-model.lazy="lazy" /></label>
+            <p><strong>Lazy:</strong> {{lazy}}</p>
+            <hr />
+            <label>Number <input type="text" v-model.number="number"/></label>
+            <p>
+                <strong>Number:</strong> {{number}}<br />
+                <strong>Type</strong> {{typeof number}}
+            </p>
+            <hr />
+            <div class="thumbnail">
+                <label>No Trim <input type="text" v-model="noTrim" /></label>
+                <p><strong>No Trim:</strong> "{{noTrim}}"</p>
+                 <label>Trim <input type="text" v-model.trim="trim" /></label>
+                <p><strong>Trim:</strong> "{{trim}}"</p>
+            </div>
+        </div>
+    </div>
+    
+</template>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"> </script>
+<script> 
+    var app = new Vue({
+        el: "#app",
+        data: {
+            inputs: {                
+                numberAsString: 0,
+                numberAsNumber: 0,
+                date: '',
+                password: '',
+                checkbox: false,
+                checkboxes: [],
+                radios: '',
+                radiosPreset: 'backend',
+                radiosDynamic: '',
+                radiosDynamicOptions: [
+                    {
+                        label: 'Blue',
+                        value: 'Light'                         
+                    },
+                    {
+                        label: 'Red',
+                        value: 'Dark'
+                    }
+                ],
+                file: '',                
+                select: '',                
+            }, 
+            fileName: '',
+            text: '',
+            select:'',
+            multiselect: [],
+            lazy:'',
+            number:'0',
+            noTrim:'',
+            trim:''
+            
+        },
+        methods:{
+          fileChanged: function(event){
+              console.log(event);
+              this.fileName = event.target.files[0].name;
+          } 
+        },
+        template:'#temp'
+    });
+</script>
+</body>
+</html>

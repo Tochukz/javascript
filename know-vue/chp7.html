@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Knowing Vue.JS</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" id="nav">
+<div class="container">
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand" style="color:#22c75a">Know Vue.JS</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-menu" aria-expanded="false">
+            <span class="sr-only"> Toggle Navigation </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="nav-menu">
+        <ul class="nav navbar-nav">     
+            <li><a href="/chp2.html">Chp2</a></li>    
+            <li><a href="/chp3.html">Chp3</a></li> 
+            <li><a href="/chp4.html">Chp4</a></li> 
+            <li><a href="/chp5.html">Chp5</a></li> 
+            <li><a href="/chp6.html">Chp6</a></li>    
+            <li><a href="/chp7.html">Chp7</a></li> 
+            <li><a href="/chp8.html">Chp8</a></li> 
+            <li><a href="/chp9.html">Chp9</a></li> 
+            <li><a href="/chp10.html">Chp10</a></li>    
+            <li><a href="/chp11.html">Chp11</a></li> 
+            <li><a href="/chp12.html">Chp12</a></li>             
+        </ul>
+    </div>
+</div>
+</nav>
+<section>
+<div class="container">    
+    <div class="row">                          
+        <div class="col-sm-12">
+            <div id="app1"></div>
+            <div id="app2"></div>
+            <h5><a href="/chp7b.html">Next >></a></h5>
+        </div>
+    </div>
+</div>
+</section>
+<template id="temp1">
+    <div>
+        <div class="col-sm-3">
+            <h3>App1 Shared Value: {{shared.value}}</h3>
+        </div>
+    </div>
+</template>
+<template id="temp2">
+    <div>
+        <div class="col-sm-3">
+            <h3>App2 Shared Value: {{shared.value}}</h3>
+            <button v-on:click="decrease">-</button> <button v-on:click="increase">+</button>
+        </div>
+    </div>
+</template>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"> </script>
+<script> 
+    var sharedData = {
+        value: 1
+    }
+    var app1 = new Vue({
+        el: "#app1",
+        data: {
+          shared:sharedData, 
+          private:{}
+        },
+        template:'#temp1'
+    });
+    var app2 = new Vue({
+        el: '#app2',
+        data:{
+            shared:sharedData,
+            private:{}
+        },
+        methods:{
+            increase: function(){
+                this.$data.shared.value++;
+            },
+            decrease: function(){
+                sharedData.value--;
+            }
+        },
+        template:'#temp2'
+        
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "es6test",
+  "version": "1.0.0",
+  "description": "'Trying out ES6 features'",
+  "main": "index.js",
+  "scripts": {
+    "test": "'Hello ES6'",
+    "start": "webpack-dev-server --hot --inline",
+    "watch": "webpack -w -d",
+    "build": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/tochukz/es6test"
+  },
+  "keywords": [
+    "es6"
+  ],
+  "author": "chucks",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^4.20.2"
+  },
+  "devDependencies": {
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.5",
+    "babel-preset-env": "^1.7.0",  
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}

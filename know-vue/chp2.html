@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Knowing Vue.JS</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" id="nav">
+<div class="container">
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand" style="color:#22c75a">Know Vue.JS</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-menu" aria-expanded="false">
+            <span class="sr-only"> Toggle Navigation </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+            <span class="icon-bar"> </span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="nav-menu">
+        <ul class="nav navbar-nav">              
+            <li><a href="/chp2.html">Chp2</a></li>    
+            <li><a href="/chp3.html">Chp3</a></li> 
+            <li><a href="/chp4.html">Chp4</a></li> 
+            <li><a href="/chp5.html">Chp5</a></li> 
+            <li><a href="/chp6.html">Chp6</a></li>    
+            <li><a href="/chp7.html">Chp7</a></li> 
+            <li><a href="/chp8.html">Chp8</a></li> 
+            <li><a href="/chp9.html">Chp9</a></li> 
+            <li><a href="/chp10.html">Chp10</a></li>    
+            <li><a href="/chp11.html">Chp11</a></li> 
+            <li><a href="/chp12.html">Chp12</a></li>             
+        </ul>
+    </div>
+</div>
+</nav>
+<section>
+<div class="container">    
+    <div class="row">                          
+        <div class="col-sm-12">
+            <div class="col-sm-2" id="app"></div>  
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name"/> 
+                </div>
+                <button class="btn btn-primary" onclick="putName()">Put Name</button>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="fullname"/> 
+                </div>
+                <button class="btn btn-primary" onclick="putFullname()">Put Fullname</button>            
+            </div>                                            
+        </div>
+    </div>
+</div>
+   
+</section>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"> </script>
+<script id="myTemplate" type="x-template">
+    <div class="col-sm-3">
+        <p>{{welcome}}  Using a template!</p>
+        <p>{{ucWelcome()}}  Using a template!</p>
+        <p>Empty Object: {{emptyObj}}</p>
+        <p>Empty String: {{emptyStr}}</p>
+        <p>Null Property: {{nullProp}}</p>
+        <p>Undefined: {{notDefined}}</p>
+        <p>Pie: {{pie}}</p>
+        <p>{{ welcome.substr(0, 7)}} !</p>
+        <p>{{ (firstname.indexOf('c') < 3)? firstname.substring(firstname.indexOf('c'), 1+firstname.lastIndexOf('u'))  : lastname}}</p>
+        <div class="form-group">
+            <input type="text" v-bind:value="salary" class="form-control"/>
+        </div>
+        <div>{{h4Elem}}</div>
+        <div v-html="h4Elem"></div>
+
+    </div>
+</script>
+<script> 
+    var app = new Vue({
+        el: "#app",
+        data: {
+            welcome: "Welcome to 'Getting to know Vue.js'!",
+            emptyObj:{},
+            emptyStr:'',
+            nullProp:null,
+            notDefined:undefined,
+            name:'Chucks',
+            firstname: 'Tochukwu',
+            lastname: 'Nwachukwu',
+            salary:'R40k',
+            h4Elem: '<h4 style="color:#ff8fab;background:#90831e">Getting to Know Vue.JS</h4>'
+        },
+        //template:"<div class='welcome'>{{welcome}}<br />Using a template.</div>"
+        template: "#myTemplate",
+        methods:{
+            getFullname:function(){
+                return this.firstname + ' ' +this.lastname;
+            },
+            ucWelcome:function(){
+                return this.welcome.toUpperCase();
+            }
+        },
+        computed:{
+            pie:function(){
+                return 22/7;
+            }
+            
+        }
+       
+    })
+
+   function putName()
+   {
+     var name = document.getElementById('name');
+     name.value = app.$data.name;
+   } 
+
+   function putFullname(){
+      var fullname = document.getElementById('fullname');
+      fullname.value = app.getFullname();
+   }
+</script>
+</body>
+</html>

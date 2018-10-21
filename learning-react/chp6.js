@@ -122,8 +122,8 @@ const AddColorForm2 = ({onNewColor = f=>f}) => {
     };
     return (
         <form onSubmit={submit}>
-            <input type="text" ref={input => _title == input} placeholder="Add color" required />
-            <input type="color" ref={input => _color == input} required />
+            <input type="text" ref={input => _title = input} placeholder="Add color" required />
+            <input type="color" ref={input => _color = input} required />
             <button>Add</button>
         </form>
     );

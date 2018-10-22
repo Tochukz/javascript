@@ -9,6 +9,7 @@ const StarRating = ({starsSelected=0, totalStars=5, onRate = p => p}) =>
                   <Star key={i} onClick={() => onRate(i+1)} selected={i<starsSelected} />      
                 )          
             )}
+            <p>&nbsp;</p>
             <p>{starsSelected} of {totalStars} stars</p>
         </div>
 StarRating.propTypes = {

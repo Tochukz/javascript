@@ -1,0 +1,43 @@
+.star {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  margin: 2px;
+  float: left;
+  background-color: grey;
+  clip-path: polygon(
+    50% 0%,
+    63% 38%,
+    100% 38%,
+    69% 59%,
+    82% 100%,
+    50% 75%,
+    18% 100%,
+    31% 59%,
+    0% 38%,
+    37% 38%
+  );
+}
+.star.selected {
+     
+  background-color: red;
+}
+section.color{
+border:solid #999 1px;
+margin:5px;
+padding:20px;
+display:inline-block
+}
+div.color{
+height:150px;
+width:150px;
+margin-left:10px;
+
+}
+form.color-form{
+margin:20px;
+}
+form.color-form input{
+display:inline-block;
+margin:10px
+}

@@ -66,6 +66,7 @@ myModule.controller('MainCtrl', function(AngelloModel){ //Dependency Injection. 
         })
     };
 });
+
 myModule.directive('story', function(){
     return {
         scope: true,

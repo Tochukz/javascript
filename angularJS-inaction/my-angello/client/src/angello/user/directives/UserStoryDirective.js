@@ -8,8 +8,19 @@ angular.module('Angello.User')
                });
            };
 
-           var controller = function($scope){
-               //Pending
+           var controller = function(){
+               var userStory = this;
+               userStory.deleteStory = function(id){
+                   StoriesModel.destroy(id)
+                               .then(
+                                     function(result){
+                                         $rootScope.$broadcast('storyDelete'); //Will alert StrorybaordCtrl about the deletion.
+                                         $log.debug('RESULT', result)
+                                     }, function(reason){
+                                         $log.debug('ERROR', reason);
+                                     }
+                               );
+               }
            };
 
            return {

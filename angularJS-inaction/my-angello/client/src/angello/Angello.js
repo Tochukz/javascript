@@ -1,11 +1,11 @@
 //Root module and submodules/depedencies
 var myModule = angular.module('Angello', [
     'ngRoute',
-    'anAnimate',
+    'ngAnimate',
     'firebase',
     'ngMessages',
     'Angello.Common',
-    'Angello,Dashboard',
+    'Angello.Dashboard',
     'Angello.Login',
     'Angello.Storyboard',
     'Angelo.User',
@@ -68,7 +68,7 @@ myModule.config(function($routeProvider, $httpProvider, $provide){
         var debugFn = $delegate.debug; //Saving the original $log.debug() method
 
         $delegate.debug = function(){
-            arguments[0] - timeStamp() + '-' + arguments[0];
+            arguments[0] = timeStamp() + '-' + arguments[0];
             debugFn.apply(null, arguments);
         };
         return $delegate;

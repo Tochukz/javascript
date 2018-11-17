@@ -4,8 +4,13 @@
     <div class="wrapper" >
         <ul class="list" ng-repeart="status in ::storyboard.statuses">
             <h2 class="status">{::status.name}</h2> <br />
-            <li userstory class="story" ng-repeat="story in ::storyboard.stories | filter: {status : status.name}" ng-click="storyboard.setCurrentStory(story)">
-                <article>
+            <li userstory
+                ng-repeat="story in ::storyboard.stories | filter: {status : status.name}"
+                drag-container="story"
+                mime-type="application/x-angello-status"
+                class="story my-repeat-animation" 
+                ng-click="storyboard.setCurrentStory(story)">
+                <article class="{{story.type}}">
                     <div>
                         <button type="button" class="close" ng-click="storyboard.deleteStory(story.id)">x</button>
                         <p class="title">{{story.title}}</p>

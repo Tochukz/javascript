@@ -1,8 +1,8 @@
 angular.module('Angello.Common')
-       .services('StoriesModel', function($http, EndpointConfigService, UtilsService){
+       .services('StoriesModel', function($http, EndpointConfigService, UtilsService, $q){
             var service = this,
                 MODEL = '/stories/';
-
+            /*
             service.all = function(){
                 return $http.get(
                             EndpointConfigService.getUrl( 
@@ -11,6 +11,23 @@ angular.module('Angello.Common')
                         ).then(function(result){
                             return  UtilsService.objectToArray(result);
                         });
+            };
+            */
+            service.all = function(){
+                var deferred = $q.defer();
+                if(service.stories){
+                    deferred.resolve(service.stories);
+                }else{
+                    $http.get(
+                            EndpointConfigService.getUrl(
+                                MODEL + EndpointConfigService.getCurrentFormat()
+                            )
+                          ).success(function(data, status, headers, config){
+                              service.stories = data;
+                              deferred.resolve(service.stories);
+                          }).error(deferred.reject)
+                }
+                return deferred.promise;
             };
 
             service.fetch = function(story_id){

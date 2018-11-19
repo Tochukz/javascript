@@ -1,3 +1,7 @@
+/**
+ * Defining a service using the provider method module.provider()
+ * 
+ */
 function ItemService(opt_items){
     var items = opt_items || [];
 
@@ -10,13 +14,15 @@ function ItemService(opt_items){
     }
 }
 angular.module('notesApp', [])
-       .provider('ItemService', function(){ //Providers can not have dependenncies on ther services. Hene no [] is used here.
+       .provider('ItemService', function(){ //Providers can not have dependenncies on ther services. Hence no [] is used here.
            var haveDefaultItems = true;
 
            this.disableDefaultItems = function(){
                haveDefaultItems =  false;
            }
            
+           //This function  gets our dependencies, not the provider above.
+           //This is what gets called when the service needs to be initialized.
            this.$get = [function(){
                var optItems = [];
                if(haveDefaultItems){
@@ -54,7 +60,7 @@ angular.module('notesApp', [])
                var self = this;
                
                self.list = function (){
-                   return ItemService.items();
+                   return ItemService.list();
                }
 
                self.add = function(){

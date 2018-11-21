@@ -9,14 +9,14 @@
     </style>
 </head>
 <body ng-controller="MainCtrl as mainCtrl">
-    <h1>Hello Services!</h1>
+    <h1>Chpater 6 HTTP get</h1>
     <div ng-repeat="todo in mainCtrl.items" class="items">
         <div><span ng-bind="todo.label"></span></div>
         <div>- by <span ng-bind="todo.author"></span></div>
     </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
 <script>
-
+/*Making get request */
     angular.module('notesApp', [])
            .controller('MainCtrl', ['$http',
                function($http){

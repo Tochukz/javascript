@@ -1,4 +1,4 @@
-/* */
+/* Configuring $http defaults globally */
 angular.module('notesApp', [])
        .controller('LoginCtrl', ['$http', 
            function($http){
@@ -35,4 +35,10 @@ angular.module('notesApp', [])
           //Set the content type to be form type for all post request
           //This does not add it for GET requests
           $httpProvider.default.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
+          /*
+           AngularJS default to a content type of application/json
+           If you can’t change your backend to accept application/json, then you can add a transformer and header to get your AngularJS application 
+           talking to your backend.
+          */
       }]);

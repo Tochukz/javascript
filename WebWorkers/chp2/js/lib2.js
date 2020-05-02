@@ -1,0 +1,1 @@
+postMessage('Message from Lib2');

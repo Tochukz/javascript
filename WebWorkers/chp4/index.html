@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Numbers</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style type="text/css">
+       .col-sm-4 div {
+           display: inline-block;
+       }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Inline Worker</h2>
+                <h5>Returns the highest prime number</h5>
+                <div class="alert alert-danger" style="display: none" id="errorDiv"></div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row" id="content">
+                    <div class="col-sm-4">
+                        <div>
+                            <input class="form-control" placeholder="Enter max number" id="max"/>
+                        </div>      
+                        <div>
+                            <button class="btn btn-success" onclick="startPrimeWorker()">Start</button>
+                        </div>  
+                        <div>
+                            <button class="btn btn-danger" onclick="stopPrimeWorker()">Stop</button>
+                        </div>                                                
+                    </div>
+                    <div class="col-sm-4">
+                        <div>
+                            <strong>Highest Prime</strong> 
+                        </div>
+                        <div>
+                            <input id="output"  class="form-control" style="height: 35px;" />
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>You can type here without any UI gliches while web worker runs behind the scene to get your highest prime number </span>
+                        <textarea class="form-control"></textarea>                    
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Define an inline worker-->
+    <script type="javascript/worker" id="primeWorker">
+        self.onmessage = function(event) {
+            if(!event.data.cmd || !event.data.max || event.data.max < 2) {
+              setTimeout(() => {
+                throw new Error(`Invalid argument received: ${JSON.stringify(event.data)}`);
+              });
+            }
+
+            const cmd = event.data.cmd;
+            const max = event.data.max;
+            switch(cmd) {
+                case 'start': 
+                  startPrimeSearch(max);
+                  break;
+                case 'stop': 
+                  self.close();
+                  break;
+                default: 
+                  setTimeout(() => {
+                    throw new Error(`Unknown Command ${cmd}`); 
+                  });                                 
+            }
+            
+        }
+
+        /** Search for prime numbers */
+        function startPrimeSearch(max) {
+            let n = 1;
+            search: while(n < max) {
+              n++;
+              for (let i = 2; i <= n; i++) {
+                  if (n !== i && n % i  === 0) {
+                    //postMessage(`${n}? No!`);
+                      continue search;
+                  }
+              }
+              // Prime number found!
+              postMessage(n);
+            }
+        }
+       
+    </script>
+
+    <script type="text/javascript">
+      let primeWorker = {};
+
+      function startPrimeWorker() {         
+        hideErrorDiv();
+
+        const primeWorkerScript = document.querySelector('#primeWorker').textContent;
+        const blob = new Blob([primeWorkerScript]);
+        
+        const pageUrl = window.webkitURL || window.URL;
+        primeWorker = new Worker(pageUrl.createObjectURL(blob));
+        primeWorker.onmessage = function(event) {
+            displayPrimeNumber(event.data);
+        }
+        primeWorker.onerror = function(error) {
+            displayError(error);
+        }
+        const max = _('max').value;
+        primeWorker.postMessage({cmd: 'start', max}) 
+      }
+
+      function stopPrimeWorker() {
+        if ('terminate' in primeWorker) {
+            primeWorker.terminate();
+            // primeWorker.postMessage({cmd: 'stop', max: null}); //Doesn't seem to work
+        }
+      }
+
+      function _(id) {
+          return document.getElementById(id);
+      }
+
+      function hideErrorDiv() {
+          _('errorDiv').style.display = 'none';
+      }
+
+      function displayError(err) {
+          const errorDetails = `<p><b>Error!</b> ${err.message} at ${err.filename} on line ${err.lineno}, column ${err.colno}</p>`;
+          _('errorDiv').style.display = 'block';
+          _('errorDiv').innerHTML = errorDetails;
+          console.error(error);
+      }
+
+      function displayPrimeNumber(prime) {
+          _('output').value = prime
+      }
+    </script>
+</body>
+</html>

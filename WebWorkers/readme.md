@@ -45,3 +45,19 @@ Use web worker to load data from external source and work with it:
 I still need to figure out how to make this work.   
 
 ## Chapter 3: Dedicated Worker  
+If you have a large JSON string you wish to parse and it will take ~250 milliseconds (or more), you should use Web Workers. 
+
+__Transferable Object__  
+There is a new (prefixed) version of postMessage() in Chrome 17+ that supports transferableobjects. It takes two arguments, the ArrayBuffer message and a list of items thatshould be transferred:
+```
+worker.webkitPostMessage(arrayBuffer, [arrayBuffer]);
+```
+You can also send messages through the window object. This approach requires adding the targetOrigin because we can post this message to different workers. 
+```
+window.webkitPostMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
+```   
+These approaches allow massive data manipulation, image processing, WebGL textures, etc., to be passed between the Web Worker and the main app with less impacton memory footprint and speed.
+
+## Chpater 4: Inline Worker  
+The main disadvantage to this technique is that it will be harder to debug your Web Worker JavaScript code. One way to
+be more productive would be to test your Web Worker as an external file. Then, only after you are happy with the results, put it back in the page as an inline Web Worker.

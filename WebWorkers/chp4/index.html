@@ -53,10 +53,8 @@
     <!--Define an inline worker-->
     <script type="javascript/worker" id="primeWorker">
         self.onmessage = function(event) {
-            if(!event.data.cmd || !event.data.max || event.data.max < 2) {
-              setTimeout(() => {
-                throw new Error(`Invalid argument received: ${JSON.stringify(event.data)}`);
-              });
+            if(!event.data.cmd || !event.data.max || event.data.max < 2) {              
+              throw new Error(`Invalid argument received: ${JSON.stringify(event.data)}`);            
             }
 
             const cmd = event.data.cmd;
@@ -68,10 +66,8 @@
                 case 'stop': 
                   self.close();
                   break;
-                default: 
-                  setTimeout(() => {
-                    throw new Error(`Unknown Command ${cmd}`); 
-                  });                                 
+                default:                   
+                    throw new Error(`Unknown Command ${cmd}`);                             
             }
             
         }

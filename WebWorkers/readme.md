@@ -82,6 +82,7 @@ The Demos are not working at the moment. I will return back to it later
 Web Worker instances are relatively heavyweight and should be long-lived. Launching a Worker and maintaining it's state requires a high per-instance memory cost. Therefore it is more effiient to pass messages to existing Workers to create tasks rather than create a new Web Worker for each work item.   
 
 Learn more about Workers for Node JS   
-* [Going Multithread with Node.js](https://itnext.io/going-multithread-with-node-js-492258ba32cf)  
-* [Node.js multithreading](https://blog.logrocket.com/node-js-multithreading-what-are-worker-threads-and-why-do-they-matter-48ab102f8b10/)  
-* [Worker Thread](https://nodejs.org/dist/latest-v12.x/docs/api/worker_threads.html)    
+* [Blog Post: Going Multithread with Node.js](https://itnext.io/going-multithread-with-node-js-492258ba32cf)  
+* [Blog Post: Node.js multithreading](https://blog.logrocket.com/node-js-multithreading-what-are-worker-threads-and-why-do-they-matter-48ab102f8b10/)  
+* [Node.js Doc: Worker Thread](https://nodejs.org/dist/latest-v12.x/docs/api/worker_threads.html)    
+* [webworker-thread npm module](https://www.npmjs.com/package/webworker-threads)

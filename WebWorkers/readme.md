@@ -45,6 +45,8 @@ Use web worker to load data from external source and work with it:
 I still need to figure out how to make this work.   
 
 ## Chapter 3: Dedicated Worker  
+Dedicated Workers are linked to the script that created them (called the owner or creator). 
+
 If you have a large JSON string you wish to parse and it will take ~250 milliseconds (or more), you should use Web Workers. 
 
 __Transferable Object__  
@@ -61,3 +63,25 @@ These approaches allow massive data manipulation, image processing, WebGL textur
 ## Chpater 4: Inline Worker  
 The main disadvantage to this technique is that it will be harder to debug your Web Worker JavaScript code. One way to
 be more productive would be to test your Web Worker as an external file. Then, only after you are happy with the results, put it back in the page as an inline Web Worker.
+
+## Chapter 5: Shared Worker  
+__(Todo: Return to the demo scrips)__
+Dedicated Workers are linked to the script that created them (called the owner or creator). Shared workers, on the other hand, are named so that any script running in the same origin can communicate with them, either by the URL of the script used to create it, or by name.  
+Multiple web application instances can communicate with a single instance of a shared worker. You instatiate then using _new Shared Worker_.  
+There are many ways to use a shared worker:  
+* Use a single shared worker as a entral point of communiation with a server  
+* Provides a single source of truth fot things line user identifiation, connetion status etc.
+* Ensure data consisteny betwen windows of the same web app
+* Reduce the memory consumption of multiple web app tabs/windows, by allowinfg sone code (e.g server communications) to be centralized.    
+
+The Demos are not working at the moment. I will return back to it later  
+
+## Chpater 6: Debug Your Worker  
+
+## Chapter 7: Web Workers Beyond the Browser: Node  
+Web Worker instances are relatively heavyweight and should be long-lived. Launching a Worker and maintaining it's state requires a high per-instance memory cost. Therefore it is more effiient to pass messages to existing Workers to create tasks rather than create a new Web Worker for each work item.   
+
+Learn more about Workers for Node JS   
+* [Going Multithread with Node.js](https://itnext.io/going-multithread-with-node-js-492258ba32cf)  
+* [Node.js multithreading](https://blog.logrocket.com/node-js-multithreading-what-are-worker-threads-and-why-do-they-matter-48ab102f8b10/)  
+* [Worker Thread](https://nodejs.org/dist/latest-v12.x/docs/api/worker_threads.html)    

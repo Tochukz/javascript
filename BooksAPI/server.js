@@ -5,9 +5,11 @@ require('dotenv').config();
 
 const app = express();
 
+/** White list URLs for Access-Control-Allow-Origin header to be sent to */
 app.use(cors({
- origin: ['http://localhost:5000', 'http://127.0.0.1:5500']   
+ origin: [/localhost/, /127.0.0.1/, /ngrok.io$/]   
 }));
+
 
 const env = process.env;
 const connection = mysql.createConnection({

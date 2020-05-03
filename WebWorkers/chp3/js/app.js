@@ -1,8 +1,14 @@
 if (window.Worker) {
   console.log('Worker is available');
 
-  $(document).ready(function() {
-    $(document).on('scroll', handleScroll)
+  $(window).scroll(function() {
+   
+    const margin  = 28;
+    console.log($(window).scrollTop() + $(window).height() + margin, $(document).height())
+    if($(window).scrollTop() + $(window).height() + margin > $(document).height()) {
+        getMoreBooks();
+        console.log('button reached');
+    }
   });
 
   let page = 1;
@@ -13,13 +19,11 @@ if (window.Worker) {
     addBooksToStorage(books);
     addBooksToUI(books);
   };
+
   bookWorker.onerror = function(err) {
-    $('#errorDiv').html(`<p><b>Error</b><br /> ${err.message} <br />  ${err.filename}  <br /> ${err.lineno}</p>`);
+    $('#errorDiv').html(`<p><b>Error!</b><br /> ${err.message}  at  ${err.filename}  on line ${err.lineno}</p>`);
     $('#errorDiv').slideDown();
-    setTimeout(() => {
-      $('#errorDiv').slideUp();
-    }, 5000)
-    console.error('Error from bookworker:', err);
+    console.error('Error from bookWorker:', err);
   }
   bookWorker.postMessage(page);
 
@@ -54,21 +58,14 @@ if (window.Worker) {
   }
 
   function addBooksToStorage(books) {
-    let previousBooks = []
-    if(localStorage.books) {
-      previousBooks = JSON.parse(localStorage.getItem('books'));
+    let bookStore = {}
+    if(localStorage.bookStore) {
+      bookStore = JSON.parse(localStorage.getItem('bookStore'));
     }
-    localStorage.setItem('books', JSON.stringify([...previousBooks, ...books]));
-  }
-
-  function handleScroll() {
-    const forDivMargin = 590;
-    const winBottom = $('#footer').offset().top - forDivMargin;
-    const yOffset = window.scrollY;
-    console.log(winBottom, yOffset);
-    if (yOffset >= winBottom) {
-      getMoreBooks();
-    }
+    books.forEach(book => {
+      bookStore[book.id] = book;
+    });
+    localStorage.setItem('bookStore', JSON.stringify(bookStore));
   }
 } 
 

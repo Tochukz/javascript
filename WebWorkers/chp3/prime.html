@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Numbers</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style type="text/css">
+       .col-sm-4 div {
+           display: inline-block;
+       }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Finding Highest Prime numbers</h2>
+                <div class="alert alert-danger" style="display: none" id="errorDiv"></div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row" id="content">
+                    <div class="col-sm-4">
+                        <div>
+                            <input class="form-control" placeholder="Enter max number" id="max"/>
+                        </div>      
+                        <div>
+                            <button class="btn btn-success" onclick="startPrimeWorker()">Start</button>
+                        </div>  
+                        <div>
+                            <button class="btn btn-danger" onclick="stopPrimeWorker()">Stop</button>
+                        </div>                                                
+                    </div>
+                    <div class="col-sm-4">
+                        <div>
+                            <strong>Highest Prime</strong> 
+                        </div>
+                        <div>
+                            <input id="output"  class="form-control" style="height: 35px;" />
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>You can type here without any UI gliches while web worker runs behind the scene to get your highest prime number </span>
+                        <textarea class="form-control"></textarea>                    
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/prime.js"></script>
+</body>
+</html>

@@ -1,8 +1,6 @@
 self.onmessage = function(event) {
-    if(!event.data.cmd || !event.data.max || event.data.max < 2) {
-      setTimeout(() => {
-        throw new Error(`No 'cmd' and/or 'max' argument found. Argument given is ${JSON.stringify(event.data)   }`);
-      });
+    if(!event.data.cmd || !event.data.max || event.data.max < 2) {      
+       throw new Error(`No 'cmd' and/or 'max' argument found. Argument given is ${JSON.stringify(event.data)   }`);    
     }
     //postMessage(`Prime Search has begun with cmd: ${event.data.cmd}, max: ${event.data.max}`);
     switch(event.data.cmd) {

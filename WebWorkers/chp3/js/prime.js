@@ -21,6 +21,6 @@ function startPrimeWorker() {
 function stopPrimeWorker() {
     if ('terminate' in primeWorker) {
         primeWorker.terminate();
-        primeWorker = null;
+        primeWorker = {};
     }
 }

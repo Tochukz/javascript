@@ -16,7 +16,7 @@ const cookie = document.cookie;
 
 function processCookies(cookieStr) {
   const content = $('#content');
-  const cookies = cookieStr.split(';');
+  const cookies = cookieStr.split(';').sort();
   cookies.forEach(ck => {
       content.append(`<p>${ck}</p>`)
   });

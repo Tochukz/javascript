@@ -1,0 +1,1 @@
+globalThis.setTimeout(() => console.log("Global This"), 3000);

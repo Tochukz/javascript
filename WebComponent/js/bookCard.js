@@ -15,10 +15,11 @@ template.innerHTML = `
     .img-div {
       background: black;
       overflow: hidden;
+      text-align: center;
     }
     .img-div img {
       max-height: 300px;
-      width: 100%;
+      max-width: 100%;
     }
     .cartBtn {
       cursor: pointer;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Component</title>
+    <link rel="stylesheet" href="/css/bootstrap.4-3-1.min.css">
+</head>
+<body>
+<div class="container">
+    <h3 class="text-info">Webcomponent Bookshop</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            <book-card book-id="81" title="Pro Angular 6" author="Adam Freeman" frontcover="http://ojlinks.test:8081/storage/book_img/81.jpg">
+                <span slot="price">$340</span>
+                <span slot="publisher">Apress</span>
+            </book-card>
+            <book-card book-id="98" title="AWS S3 Cookbook" author="Naoya Hashimoto" frontcover="http://ojlinks.test:8081/storage/book_img/98.jpg">
+                <span slot="price">$450</span>
+                <span slot="publisher">PackT</span>
+            </book-card>
+        </div>
+    </div>
+</div>
+    
+  <script src="/js/bookCard.js"></script>
+</body>
+</html>

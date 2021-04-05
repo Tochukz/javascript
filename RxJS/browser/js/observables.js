@@ -17,7 +17,7 @@ subcategories$.subscribe(response => {
   console.log('subcategories', response);
 });
 
-const login$ = ajax.ajax.post('http://ojlinks-api.test:8084/admin/login', {username: 'chucks'}, {'Authorization': 'Bearer eyJhbGci.U7r1-e8'});
+const login$ = ajax.ajax.post('http://ojlinks-api.test:8084/admin/login', {username: 'chucks'}, {'Authorization': 'Bearer efake.useless-token'});
 login$.subscribe(ajaxResponse => {
   if (ajaxResponse.status == 200) {
     const result = ajaxResponse.response;
